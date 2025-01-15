@@ -33,7 +33,7 @@ parser.add_argument("--train_type", default="EItrain", type=str, help="EItrain o
 def main() -> object:
 
     global opt, model
-    os.environ["CUDA_VISIBLE_DEVICES"] = "7"
+    os.environ["CUDA_VISIBLE_DEVICES"] = "0"
     opt = parser.parse_args()
     opt.norm_flag = False
     opt.augment_flag = False

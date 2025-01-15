@@ -3,7 +3,7 @@ from os import listdir
 from os.path import join
 import torch
 import torch.utils.data as data
-from libtiff import TIFFfile
+import tifffile
 from PIL import Image
 import numpy as np
 import random
@@ -18,9 +18,9 @@ def load_img(filepath):
     # y = np.array(img).reshape(1,img.size[0],img.size[1])
     # m = np.tile(y, (2, 1, 1))
     # tif = TIFFfile(filepath+'/IMECMine_D65.tif')
-    tif = TIFFfile(filepath)
-    picture, _ = tif.get_samples()
-    img = picture[0].transpose(2, 1, 0)
+    tif = tifffile.TiffFile(filepath)
+    picture = tif.asarray()
+    img = picture.transpose(2, 1, 0)
     # img_test = Image.fromarray(img[:,:,1])
     return img
 
