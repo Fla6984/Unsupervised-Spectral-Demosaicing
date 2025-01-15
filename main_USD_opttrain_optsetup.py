@@ -91,9 +91,9 @@ def main() -> object:
     if opt.dataset == 'ICVL':
         opt.train_ps = 100
         opt.val_ps = 512
-        train_set = get_training_set_opt("/data1/fengkai/dataset/ICVL/IMEC25_600/train",
+        train_set = get_training_set_opt("/content/Unsupervised-Spectral-Demosaicing/dataset_msimaker/ICVL/train/train",
                                          opt.msfa_size, opt.norm_flag, opt.augment_flag, opt.train_ps)
-        test_set = get_test_set_opt("/data1/fengkai/dataset/ICVL/IMEC25_600/test",
+        test_set = get_test_set_opt("/content/Unsupervised-Spectral-Demosaicing/dataset_msimaker/ICVL/test/test",
                                     opt.msfa_size, opt.norm_flag, opt.val_ps)
     elif opt.dataset == 'NTIRE':
         opt.train_ps = 160
