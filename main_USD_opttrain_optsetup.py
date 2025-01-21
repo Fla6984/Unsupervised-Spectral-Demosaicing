@@ -562,15 +562,3 @@ def save_statistics(opt, results, epoch):
     # print("saveLoss")
 if __name__ == "__main__":
     main()
-
-# Grafico della perdita
-plt.figure(figsize=(10, 5))
-plt.plot(results['im_loss'], label="im_loss")
-plt.plot(results['re_loss'], label="re_loss")
-plt.plot(results['all_loss'], label="all_loss")
-plt.xlabel("Epoche")
-plt.ylabel("loss")
-plt.title("Andamento della loss durante l'addestramento")
-plt.legend()
-plt.grid()
-plt.show()
