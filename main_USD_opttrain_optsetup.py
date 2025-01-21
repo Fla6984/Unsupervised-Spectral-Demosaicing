@@ -45,7 +45,7 @@ def main() -> object:
     if opt.train_type == 'EItrain':
         if opt.dataset == 'ICVL':
             opt.batchSize = 1
-            opt.nEpochs = 2
+            opt.nEpochs = 225
             opt.save_interval = 10
         elif opt.dataset == 'NTIRE':
             opt.batchSize = 16
