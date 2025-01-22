@@ -185,7 +185,7 @@ def input_matrix_wpn(inH, inW, add_id_channel=False):
 
 parser = argparse.ArgumentParser(description="PyTorch LapSRN Demo")
 parser.add_argument("--cuda", action="store_true", help="use cuda?")
-parser.add_argument("--model", default="checkpoint/mcan_model.pth", type=str, help="model path")
+parser.add_argument("--model", default="checkpoint/De_happy_model_epoch_10.pth", type=str, help="model path")
 parser.add_argument("--val_dir", default="CAVE_dataset/new_val", type=str, help="model path")
 parser.add_argument("--image", default="beads_ms", type=str, help="image name")
 parser.add_argument("--scale", default=4, type=int, help="scale factor, Default: 4")
