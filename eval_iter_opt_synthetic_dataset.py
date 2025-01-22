@@ -121,7 +121,7 @@ for type_name in type_name_list:
         avg_elapsed_time = 0.0
         sample_num = 0
         if opt.dataset == 'ICVL':
-            testimg_path = '/data1/fengkai/dataset/ICVL/IMEC25_600/test/'
+            testimg_path = '/content/Unsupervised-Spectral-Demosaicing/dataset_msimaker/ICVL/test/test'
             opt.ext = '.tif'
             save_path = 'results/syn/'
         elif opt.dataset == 'NTIRE':
