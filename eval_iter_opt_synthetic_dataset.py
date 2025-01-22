@@ -15,9 +15,14 @@ from collections import OrderedDict
 import pandas as pd
 
 def load_img(filepath):
-    tif = TIFFfile(filepath)
-    picture, _ = tif.get_samples()
-    img = picture[0].transpose(2, 1, 0)
+    # img = Image.open(filepath+'/1.tif')
+    # y = np.array(img).reshape(1,img.size[0],img.size[1])
+    # m = np.tile(y, (2, 1, 1))
+    # tif = TIFFfile(filepath+'/IMECMine_D65.tif')
+    tif = tifffile.TiffFile(filepath)
+    picture = tif.asarray()
+    img = picture.transpose(2, 1, 0)
+    # img_test = Image.fromarray(img[:,:,1])
     return img
 
 def psnr(x_true, x_pred):
