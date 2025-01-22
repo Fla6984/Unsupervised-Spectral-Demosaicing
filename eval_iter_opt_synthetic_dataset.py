@@ -94,7 +94,7 @@ def ssim(x_true,x_pre):
     return SSIM
 periodic_avg_dict = OrderedDict()
 
-type_name_list = ['ICVL_LSA_5_EItrain_Transrandom_alpha1_st1_240324_220911']
+type_name_list = ['ICVL_LSA_5_EItrain_Transrandom_alpha1_st1_250121_151718']
 for type_name in type_name_list:
     for epoch_num in range(10, 30, 10):
         parser = argparse.ArgumentParser(description="USD syn dataset")
@@ -102,7 +102,7 @@ for type_name in type_name_list:
         parser.add_argument("--model", default="checkpoint/"+type_name+"/De_happy_model_epoch_"+str(epoch_num)+".pth", type=str, help="model path")
         parser.add_argument("--msfa_size", default=5, type=int, help="scale factor, Default: 4")
         parser.add_argument("--dataset", default="ICVL", type=str, help="NTIRE, ICVL")
-        os.environ["CUDA_VISIBLE_DEVICES"] = "3"
+        os.environ["CUDA_VISIBLE_DEVICES"] = "0"
         opt = parser.parse_args()
         cuda = True
         save_flag = False
