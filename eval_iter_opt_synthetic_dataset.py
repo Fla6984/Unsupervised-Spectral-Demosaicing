@@ -5,7 +5,8 @@ from torch.autograd import Variable
 import numpy as np
 import time, math
 import matplotlib.pyplot as plt
-from libtiff import TIFFfile, TIFFimage
+import tifffile
+from PIL import Image
 from sklearn.metrics import mean_squared_error
 from Spectral_demosaicing import input_matrix_wpn as input_matrix_wpn_msfasize
 from Spectral_demosaicing import pixel_shuffle_inv, loadCube, mask_input, get_filename, ergas_matlab
