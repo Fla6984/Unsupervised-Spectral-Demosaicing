@@ -105,8 +105,8 @@ for type_name in type_name_list:
         os.environ["CUDA_VISIBLE_DEVICES"] = "0"
         opt = parser.parse_args()
         cuda = True
-        save_flag = False
-        show_img = False
+        save_flag = True
+        show_img = True
         if cuda and not torch.cuda.is_available():
             raise Exception("No GPU found, please run without --cuda")
 
@@ -201,34 +201,34 @@ for type_name in type_name_list:
                     im_h_y[im_h_y < 0] = 0
                     im_h_y[im_h_y > 255.] = 255.
                     im_h_y = im_h_y.astype(np.uint8)
-                    im_h_y = im_h_y.astype(np.float)
+                    im_h_y = im_h_y.astype(float)
 
                     raw = raw.cpu()
-                    raw = raw.data[0].numpy().astype(np.float32)
+                    raw = raw.data[0].numpy().astype(float)
                     raw = raw * 255.
                     raw[raw < 0] = 0
                     raw[raw > 255.] = 255.
 
                     im_input = im_input.cpu()
-                    im_input = im_input.data[0].numpy().astype(np.float32)
+                    im_input = im_input.data[0].numpy().astype(float)
                     im_input = im_input * 255.
                     im_input[im_input < 0] = 0
                     im_input[im_input > 255.] = 255.
 
                     im_gt_y = im_gt_y.astype(np.uint8)
-                    im_gt_y = im_gt_y.astype(np.float)
+                    im_gt_y = im_gt_y.astype(float)
                     [psnr_predicted, mse] = psnr(im_gt_y.transpose(2, 1, 0), im_h_y.transpose(2, 1, 0))
                     print("PSNR_singleimage=", psnr_predicted)
                     ssim_predicted = ssim(im_gt_y.transpose(2, 1, 0), im_h_y.transpose(2, 1, 0))
                     sam_predicted = sam(im_gt_y.transpose(2, 1, 0), im_h_y.transpose(2, 1, 0))
                     ergas_predicted = ergas_matlab(im_gt_y.transpose(2, 1, 0), im_h_y.transpose(2, 1, 0))
 
-                    if save_flag:
-                        tiff = TIFFimage(im_h_y.astype(np.uint8), description='')
-                        tiff.write_file((save_path + image_name + '_' + type_name + epoch_num + '.tif'),
-                                        compression='none')
-                        del tiff  # flushes data to disk
-
+                    # Save the demosaiced image
+                    output_dir = "output_demosaiced"
+                    os.makedirs(output_dir, exist_ok=True)
+                    output_file = os.path.join(output_dir, "output.tif")
+                    tifffile.imwrite(output_file, im_h_y.transpose(1, 2, 0).astype(np.uint8))
+                    print(f"Saved demosaiced image to: {output_file}")
                     avg_psnr_predicted += psnr_predicted
                     avg_sam_predicted += sam_predicted
                     avg_ssim_predicted += ssim_predicted
