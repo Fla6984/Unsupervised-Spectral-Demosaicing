@@ -184,7 +184,7 @@ for type_name in type_name_list:
                     elapsed_time = time.time() - start_time
 
                     HR_4x = HR_4x.cpu()
-                    im_h_y = HR_4x.data[0].numpy().astype(np.float32)
+                    im_h_y = HR_4x.data[0].numpy().astype(float)
 
                     cube_pdc_var = np.ones((1, opt.msfa_size ** 2))
                     for bn in range(opt.msfa_size ** 2):
