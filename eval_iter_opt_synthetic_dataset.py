@@ -192,7 +192,7 @@ for type_name in type_name_list:
                                                                opt.msfa_size)
                         singleband_pdc_avg = np.mean(np.mean(singleband_pdc_avg, -1), -1)
                         singleband_pdc_avg = singleband_pdc_avg.var(axis=1)
-                        cube_pdc_var[0, bn] = singleband_pdc_avg
+                        cube_pdc_var[0, bn] = singleband_pdc_avg.item()
                     cube_pdc_var_avg = np.mean(cube_pdc_var, 1)
                     print('SEI_singleimage=', cube_pdc_var_avg)
 
