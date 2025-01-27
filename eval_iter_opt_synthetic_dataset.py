@@ -227,7 +227,7 @@ for type_name in type_name_list:
                     output_dir = "output_demosaiced"
                     os.makedirs(output_dir, exist_ok=True)
                     output_file = os.path.join(output_dir, "output.tif")
-                    tifffile.imwrite(output_file, im_h_y.transpose(1, 2, 0).astype(np.uint8))
+                    tifffile.imwrite(output_file, im_h_y.transpose(0,1,2).astype(np.uint8))
                     print(f"Saved demosaiced image to: {output_file}")
                     avg_psnr_predicted += psnr_predicted
                     avg_sam_predicted += sam_predicted
