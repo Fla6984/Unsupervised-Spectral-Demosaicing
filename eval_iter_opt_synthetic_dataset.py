@@ -94,6 +94,10 @@ def ssim(x_true,x_pre):
     return SSIM
 periodic_avg_dict = OrderedDict()
 
+output_dire = "statistiche"
+os.makedirs(output_dire, exist_ok=True)
+output_fiile = os.path.join(output_dire, "psnr.csv")
+lista_psnr=[]
 type_name_list = ['ICVL_LSA_5_EItrain_Transrandom_alpha1_st1_250121_151718']
 for type_name in type_name_list:
     for epoch_num in range(10, 30, 10):
@@ -112,7 +116,8 @@ for type_name in type_name_list:
 
         print(opt.model)
         model = torch.load(opt.model)["model"]
-
+        
+        
         avg_psnr_predicted = 0.0
         avg_sam_predicted = 0.0
         avg_ssim_predicted = 0.0
@@ -282,6 +287,7 @@ for type_name in type_name_list:
                     del im_input
             avg_psnr_predicted_save = avg_psnr_predicted / sample_num
             print("PSNR_predicted=", avg_psnr_predicted_save)
+            lista_psnr.append({"Epoch": epoch_num, "avg_psnr_predicted_save": avg_psnr_predicted_save}) #aggiorno lista per PSNR medi in ogni epoca
             print("SSIM_predicted=", avg_ssim_predicted / sample_num)
             print("SAM_predicted=", avg_sam_predicted / sample_num)
             print("ERGAS_predicted=", avg_ergas_predicted / sample_num)
@@ -297,6 +303,11 @@ for type_name in type_name_list:
             avg_ergas_predicted = 0
             avg_sei = 0
             sample_num = 0
+
+#Creazione dataframe per lista_psnr            
+df = pd.DataFrame(lista_psnr)
+# Salvataggio del DataFrame in un file CSV
+df.to_csv(output_fiile, index=False)
 
 print("Dataset=", opt.dataset)
 print("It takes average {}s for processing".format(avg_elapsed_time/len(name_list)))
