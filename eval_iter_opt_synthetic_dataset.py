@@ -247,23 +247,35 @@ for type_name in type_name_list:
                             buff = np.concatenate((im_gt_y[0:1, :, :], im_gt_y[7:8, :, :], im_gt_y[14:15, :, :])).transpose(1, 2, 0)
                         ax.imshow(buff.astype(np.uint8))
                         ax.set_title("GT")
-
+ 
                         ax = plt.subplot(222)
                         ax.imshow(im_input[nband, :, :], cmap='gray')
                         ax.set_title("Input(one band)")
-
+ 
                         ax = plt.subplot(223)
                         ax.imshow(raw[0, :, :], cmap='gray')
                         ax.set_title("Input(raw)")
-
+ 
                         ax = plt.subplot(224)
                         if opt.msfa_size == 5:
                             buff = np.concatenate((im_h_y[22:23, :, :], im_h_y[12:13, :, :], im_h_y[4:5, :, :])).transpose(1, 2, 0)
                         elif opt.msfa_size == 4:
                             buff = np.concatenate((im_h_y[0:1, :, :], im_h_y[7:8, :, :], im_h_y[14:15, :, :])).transpose(1, 2, 0)
                         ax.imshow(buff.astype(np.uint8))
-                        ax.set_title(opt.model)
-                        plt.show()
+                        model_name = os.path.basename(opt.model)
+                        ax.set_title(model_name)
+                        print("Forme per visualizzazione:", buff.shape)
+ 
+                        fig_dir = "output_plots"
+                        os.makedirs(fig_dir, exist_ok=True)
+ 
+                        figure_filename = f"{image_name}_epoch_{epoch_num}.png"
+                        figure_path = os.path.join(fig_dir, figure_filename)
+ 
+                        plt.savefig(figure_path, dpi=300, bbox_inches='tight')
+                        print(f"Saved figure to: {figure_path}")
+ 
+                        plt.close(fig)
 
                     del HR_4x
                     del raw
