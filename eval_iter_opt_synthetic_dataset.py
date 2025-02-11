@@ -98,13 +98,13 @@ output_dire = "statistiche"
 os.makedirs(output_dire, exist_ok=True)
 output_fiile = os.path.join(output_dire, "psnr.csv")
 lista_psnr=[]
-type_name_list = ['ICVL_LSA_5_EItrain_Transrandom_alpha1_st1_250121_151718']
+type_name_list = ['ICVL_LSA_3_EItrain_Transrandom_alpha1_st1_250210_184752']
 for type_name in type_name_list:
     for epoch_num in range(10, 30, 10):
         parser = argparse.ArgumentParser(description="USD syn dataset")
         parser.add_argument("--cuda", action="store_true", help="use cuda?")
         parser.add_argument("--model", default="checkpoint/"+type_name+"/De_happy_model_epoch_"+str(epoch_num)+".pth", type=str, help="model path")
-        parser.add_argument("--msfa_size", default=5, type=int, help="scale factor, Default: 4")
+        parser.add_argument("--msfa_size", default=3, type=int, help="scale factor, Default: 3")
         parser.add_argument("--dataset", default="ICVL", type=str, help="NTIRE, ICVL")
         os.environ["CUDA_VISIBLE_DEVICES"] = "0"
         opt = parser.parse_args()
@@ -126,7 +126,7 @@ for type_name in type_name_list:
         avg_elapsed_time = 0.0
         sample_num = 0
         if opt.dataset == 'ICVL':
-            testimg_path = '/content/Unsupervised-Spectral-Demosaicing/dataset_msimaker/ICVL/test/test/'
+            testimg_path = '/content/Unsupervised-Spectral-Demosaicing/dataset_msimaker/ICVL/test/crop_stest/'
             opt.ext = '.tif'
             save_path = 'results/syn/'
         elif opt.dataset == 'NTIRE':
@@ -242,12 +242,12 @@ for type_name in type_name_list:
                     avg_elapsed_time += elapsed_time
 
                     if show_img:
-                        nband = 12
+                        nband = 8
                         fig = plt.figure()
                         ax = plt.subplot(221)
                         # ax.imshow(im_gt_y[nband, :, :], cmap='gray')
-                        if opt.msfa_size == 5:
-                            buff = np.concatenate((im_gt_y[22:23, :, :], im_gt_y[12:13, :, :], im_gt_y[4:5, :, :])).transpose(1, 2, 0)
+                        if opt.msfa_size == 3:
+                            buff = np.concatenate((im_gt_y[7:8, :, :], im_gt_y[1:2, :, :], im_gt_y[4:5, :, :])).transpose(1, 2, 0)
                         elif opt.msfa_size == 4:
                             buff = np.concatenate((im_gt_y[0:1, :, :], im_gt_y[7:8, :, :], im_gt_y[14:15, :, :])).transpose(1, 2, 0)
                         ax.imshow(buff.astype(np.uint8))
@@ -262,14 +262,14 @@ for type_name in type_name_list:
                         ax.set_title("Input(raw)")
  
                         ax = plt.subplot(224)
-                        if opt.msfa_size == 5:
-                            buff = np.concatenate((im_h_y[22:23, :, :], im_h_y[12:13, :, :], im_h_y[4:5, :, :])).transpose(1, 2, 0)
+                        if opt.msfa_size == 3:
+                            buff = np.concatenate((im_h_y[7:8, :, :], im_h_y[1:2, :, :], im_h_y[4:5, :, :])).transpose(1, 2, 0)
                         elif opt.msfa_size == 4:
                             buff = np.concatenate((im_h_y[0:1, :, :], im_h_y[7:8, :, :], im_h_y[14:15, :, :])).transpose(1, 2, 0)
                         ax.imshow(buff.astype(np.uint8))
                         model_name = os.path.basename(opt.model)
                         ax.set_title(model_name)
-                        print("Forme per visualizzazione:", buff.shape)
+                        #print("Forme per visualizzazione:", buff.shape)
  
                         fig_dir = "output_plots"
                         os.makedirs(fig_dir, exist_ok=True)
