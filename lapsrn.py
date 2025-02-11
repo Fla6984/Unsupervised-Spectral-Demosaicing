@@ -365,7 +365,7 @@ class front_input_block_msfa_size_noAtt(nn.Module):
 
 
 class Pos2Weight(nn.Module):
-    def __init__(self, outC=16, kernel_size=5, inC=1):
+    def __init__(self, outC=16, kernel_size=3, inC=1):
         super(Pos2Weight, self).__init__()
         self.inC = inC
         self.kernel_size = kernel_size
@@ -410,7 +410,7 @@ class _ConvMultiW(nn.Module):
 
     def reset_parameters(self):
         n = self.in_channels
-        init.kaiming_uniform_(self.weight, a=math.sqrt(5))
+        init.kaiming_uniform_(self.weight, a=math.sqrt(3))
         if self.bias is not None:
             fan_in, _ = init._calculate_fan_in_and_fan_out(self.weight)
             bound = 1 / math.sqrt(fan_in)
@@ -752,7 +752,7 @@ class Net(nn.Module):
         x, y = data
         WB_norelu = self.WB_Conv(x)
         N, C, H, W = y.size()
-        msfa_size = 5
+        msfa_size = 3
         pos_mat = pos_mat.view(1, H, W, 2)
         pos_mat = pos_mat[:, 0:msfa_size, 0:msfa_size, :]
         pos_mat = pos_mat.contiguous().view(1, msfa_size ** 2, 2)
@@ -955,7 +955,7 @@ class Net_St(nn.Module):
         x, y = data
         WB_norelu = self.WB_Conv(x)
         N, C, H, W = y.size()
-        msfa_size = 5
+        msfa_size = 3
         pos_mat = pos_mat.view(1, H, W, 2)
         pos_mat = pos_mat[:, 0:msfa_size, 0:msfa_size, :]
         pos_mat = pos_mat.contiguous().view(1, msfa_size ** 2, 2)
@@ -1154,7 +1154,7 @@ class Net_MC_LSA(nn.Module):
         WB_norelu = self.WB_Conv(x)
 
         N, C, H, W = y.size()
-        msfa_size = 5
+        msfa_size = 3
         pos_mat = pos_mat.view(1, H, W, 2)
         pos_mat = pos_mat[:, 0:msfa_size, 0:msfa_size, :]
         pos_mat = pos_mat.contiguous().view(1, msfa_size**2, 2)
@@ -2111,7 +2111,7 @@ class Net_WO_WB(nn.Module):
     def forward(self, data, pos_mat):
         x, y = data
         N, C, H, W = y.size()
-        msfa_size = 5
+        msfa_size = 3
         pos_mat = pos_mat.view(1, H, W, 2)
         pos_mat = pos_mat[:, 0:msfa_size, 0:msfa_size, :]
         pos_mat = pos_mat.contiguous().view(1, msfa_size ** 2, 2)
@@ -2153,7 +2153,7 @@ class HSA_Mpattern(nn.Module):
         self.scale = 1
         self.msfa_size = msfa_size
         self.outC = msfa_size**2
-        if msfa_size == 5:
+        if msfa_size == 3:
             self.mcm_ksize = msfa_size+2
         elif msfa_size == 4:
             self.mcm_ksize = msfa_size + 1
@@ -2367,7 +2367,7 @@ class Mpattern_opt(nn.Module):
         self.msfa_size = msfa_size
         self.outC = msfa_size**2
         self.att_type = att_type
-        if msfa_size == 5:
+        if msfa_size == 3:
             self.mcm_ksize = msfa_size+2
         elif msfa_size == 4:
             self.mcm_ksize = msfa_size + 1
@@ -2487,7 +2487,7 @@ class Mpattern_opt_fast(nn.Module):
         self.msfa_size = msfa_size
         self.outC = msfa_size**2
         self.att_type = att_type
-        if msfa_size == 5:
+        if msfa_size == 3:
             self.mcm_ksize = msfa_size+2
         elif msfa_size == 4:
             self.mcm_ksize = msfa_size + 1
@@ -2589,7 +2589,7 @@ class Mpattern_opt_fast2(nn.Module):
         self.msfa_size = msfa_size
         self.outC = msfa_size**2
         self.att_type = att_type
-        if msfa_size == 5:
+        if msfa_size == 3:
             self.mcm_ksize = msfa_size+2
         elif msfa_size == 4:
             self.mcm_ksize = msfa_size + 1
@@ -2691,7 +2691,7 @@ class Mpattern_opt_newMCM(nn.Module):
         self.inC = inC
         self.outC = msfa_size**2
         self.att_type = att_type
-        if msfa_size == 5:
+        if msfa_size == 3:
             self.mcm_ksize = msfa_size + 2
         elif msfa_size == 4:
             self.mcm_ksize = msfa_size + 1
