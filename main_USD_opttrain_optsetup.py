@@ -26,7 +26,7 @@ parser.add_argument("--threads", type=int, default=0, help="Number of threads fo
 parser.add_argument("--momentum", default=0.9, type=float, help="Momentum, Default: 0.9")
 parser.add_argument("--weight-decay", "--wd", default=1e-4, type=float, help="weight decay, Default: 1e-4")
 parser.add_argument("--pretrained", default="", type=str, help="path to pretrained model (default: none)")
-parser.add_argument('--msfa_size', '-uf',  type=int, default=5, help="the size of square msfa")
+parser.add_argument('--msfa_size', '-uf',  type=int, default=3, help="the size of square msfa")
 parser.add_argument("--dataset", default="ICVL", type=str, help="dataset. Can be NTIRE/ICVL/Mosaic25")
 parser.add_argument("--model", default="LSA", type=str, help="model. Can be LSA/HSA/SE/St")
 parser.add_argument("--train_type", default="EItrain", type=str, help="EItrain or Suptrain or mixSuptrain")
@@ -45,7 +45,7 @@ def main() -> object:
     if opt.train_type == 'EItrain':
         if opt.dataset == 'ICVL':
             opt.batchSize = 1
-            opt.nEpochs = 225
+            opt.nEpochs = 200
             opt.save_interval = 10
         elif opt.dataset == 'NTIRE':
             opt.batchSize = 16
@@ -92,9 +92,9 @@ def main() -> object:
     if opt.dataset == 'ICVL':
         opt.train_ps = 100
         opt.val_ps = 512
-        train_set = get_training_set_opt("/content/Unsupervised-Spectral-Demosaicing/dataset_msimaker/ICVL/train/train",
+        train_set = get_training_set_opt("/content/Unsupervised-Spectral-Demosaicing/ICVL/train/",
                                          opt.msfa_size, opt.norm_flag, opt.augment_flag, opt.train_ps)
-        test_set = get_test_set_opt("/content/Unsupervised-Spectral-Demosaicing/dataset_msimaker/ICVL/test/test",
+        test_set = get_test_set_opt("/content/Unsupervised-Spectral-Demosaicing/ICVL/test/",
                                     opt.msfa_size, opt.norm_flag, opt.val_ps)
     elif opt.dataset == 'NTIRE':
         opt.train_ps = 160
@@ -338,7 +338,7 @@ def train_sup(training_data_loader, optimizer, model, criterion, criterion1, epo
         # running_results['re_loss'] += loss_raw.item()
         # running_results['all_loss'] += loss.item()
         if 'fast' in opt.model:
-            if opt.msfa_size == 5:
+            if opt.msfa_size == 3:
                 mcm_ksize = opt.msfa_size + 2
             elif opt.msfa_size == 4:
                 mcm_ksize = opt.msfa_size + 1
