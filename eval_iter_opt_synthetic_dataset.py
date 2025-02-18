@@ -98,7 +98,7 @@ output_dire = "statistiche"
 os.makedirs(output_dire, exist_ok=True)
 output_fiile = os.path.join(output_dire, "psnr.csv")
 lista_psnr=[]
-type_name_list = ['ICVL_LSA_3_EItrain_Transrandom_alpha1_st1_250210_184752']
+type_name_list = ['ICVL_LSA_3_EItrain_Transrandom_alpha1_st1_250214_160034']
 for type_name in type_name_list:
     for epoch_num in range(10, 30, 10):
         parser = argparse.ArgumentParser(description="USD syn dataset")
@@ -126,7 +126,7 @@ for type_name in type_name_list:
         avg_elapsed_time = 0.0
         sample_num = 0
         if opt.dataset == 'ICVL':
-            testimg_path = '/content/Unsupervised-Spectral-Demosaicing/dataset_msimaker/ICVL/test/'
+            testimg_path = '/content/Unsupervised-Spectral-Demosaicing/ICVL/test/'
             opt.ext = '.tif'
             save_path = 'results/syn/'
         elif opt.dataset == 'NTIRE':
@@ -244,31 +244,32 @@ for type_name in type_name_list:
                     if show_img:
                         nband = 8
                         fig = plt.figure()
+                        title_size = 10 
                         ax = plt.subplot(221)
                         # ax.imshow(im_gt_y[nband, :, :], cmap='gray')
                         if opt.msfa_size == 3:
                             buff = np.concatenate((im_gt_y[7:8, :, :], im_gt_y[1:2, :, :], im_gt_y[4:5, :, :])).transpose(1, 2, 0)
                         elif opt.msfa_size == 4:
                             buff = np.concatenate((im_gt_y[0:1, :, :], im_gt_y[7:8, :, :], im_gt_y[14:15, :, :])).transpose(1, 2, 0)
-                        ax.imshow(buff.astype(np.uint8))
-                        ax.set_title("GT")
+                        ax.imshow(buff.astype(np.uint8),, cmap='gray')
+                        ax.set_title("GT", fontsize=title_size)
  
                         ax = plt.subplot(222)
                         ax.imshow(im_input[nband, :, :], cmap='gray')
-                        ax.set_title("Input(one band)")
+                        ax.set_title("Input(one band)", fontsize=title_size)
  
                         ax = plt.subplot(223)
                         ax.imshow(raw[0, :, :], cmap='gray')
-                        ax.set_title("Input(raw)")
+                        ax.set_title("Input(raw)", fontsize=title_size)
  
                         ax = plt.subplot(224)
                         if opt.msfa_size == 3:
                             buff = np.concatenate((im_h_y[7:8, :, :], im_h_y[1:2, :, :], im_h_y[4:5, :, :])).transpose(1, 2, 0)
                         elif opt.msfa_size == 4:
                             buff = np.concatenate((im_h_y[0:1, :, :], im_h_y[7:8, :, :], im_h_y[14:15, :, :])).transpose(1, 2, 0)
-                        ax.imshow(buff.astype(np.uint8))
+                        ax.imshow(buff.astype(np.uint8), , cmap='gray')
                         model_name = os.path.basename(opt.model)
-                        ax.set_title(model_name)
+                        ax.set_title(model_name, fontsize=title_size)
                         #print("Forme per visualizzazione:", buff.shape)
  
                         fig_dir = "output_plots"
