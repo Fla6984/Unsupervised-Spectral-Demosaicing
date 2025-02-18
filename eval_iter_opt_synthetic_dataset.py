@@ -251,7 +251,7 @@ for type_name in type_name_list:
                             buff = np.concatenate((im_gt_y[7:8, :, :], im_gt_y[1:2, :, :], im_gt_y[4:5, :, :])).transpose(1, 2, 0)
                         elif opt.msfa_size == 4:
                             buff = np.concatenate((im_gt_y[0:1, :, :], im_gt_y[7:8, :, :], im_gt_y[14:15, :, :])).transpose(1, 2, 0)
-                        ax.imshow(buff.astype(np.uint8),, cmap='gray')
+                        ax.imshow(buff.astype(np.uint8), cmap='gray')
                         ax.set_title("GT", fontsize=title_size)
  
                         ax = plt.subplot(222)
@@ -267,7 +267,7 @@ for type_name in type_name_list:
                             buff = np.concatenate((im_h_y[7:8, :, :], im_h_y[1:2, :, :], im_h_y[4:5, :, :])).transpose(1, 2, 0)
                         elif opt.msfa_size == 4:
                             buff = np.concatenate((im_h_y[0:1, :, :], im_h_y[7:8, :, :], im_h_y[14:15, :, :])).transpose(1, 2, 0)
-                        ax.imshow(buff.astype(np.uint8), , cmap='gray')
+                        ax.imshow(buff.astype(np.uint8),  cmap='gray')
                         model_name = os.path.basename(opt.model)
                         ax.set_title(model_name, fontsize=title_size)
                         #print("Forme per visualizzazione:", buff.shape)
