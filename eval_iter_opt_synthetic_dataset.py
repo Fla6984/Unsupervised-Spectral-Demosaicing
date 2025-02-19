@@ -98,11 +98,9 @@ output_dire = "statistiche"
 os.makedirs(output_dire, exist_ok=True)
 output_fiile = os.path.join(output_dire, "psnr.csv")
 lista_psnr=[]
-parser = argparse.ArgumentParser()
-parser.add_argument("--type_name", type=str, nargs='+', default=['default_value'], help="Lista dei nomi da usare")
-args = parser.parse_args()
 
-type_name_list = args.type_name
+
+type_name_list = ['ICVL_LSA_3_EItrain_Transrandom_alpha1_st1_250219_154603']
 for type_name in type_name_list:
     for epoch_num in range(10, 30, 10):
         parser = argparse.ArgumentParser(description="USD syn dataset")
