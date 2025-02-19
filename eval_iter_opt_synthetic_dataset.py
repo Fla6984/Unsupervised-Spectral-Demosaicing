@@ -267,7 +267,7 @@ for type_name in type_name_list:
                         ax.set_yticks([])  # Rimuove i numeri sull'asse Y
 
                         ax = plt.subplot(223)
-                        ax.imshow(raw[nband, :, :], cmap='gray')
+                        ax.imshow(raw[0, :, :], cmap='gray')
                         ax.set_title("Input(raw)", fontsize=title_size)
                         ax.set_xticks([])  # Rimuove i numeri sull'asse X
                         ax.set_yticks([])  # Rimuove i numeri sull'asse Y
