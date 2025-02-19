@@ -98,7 +98,11 @@ output_dire = "statistiche"
 os.makedirs(output_dire, exist_ok=True)
 output_fiile = os.path.join(output_dire, "psnr.csv")
 lista_psnr=[]
-type_name_list = ['ICVL_LSA_3_EItrain_Transrandom_alpha1_st1_250214_160034']
+parser = argparse.ArgumentParser()
+parser.add_argument("--type_name", type=str, nargs='+', default=['default_value'], help="Lista dei nomi da usare")
+args = parser.parse_args()
+
+type_name_list = args.type_name
 for type_name in type_name_list:
     for epoch_num in range(10, 30, 10):
         parser = argparse.ArgumentParser(description="USD syn dataset")
@@ -144,7 +148,9 @@ for type_name in type_name_list:
                         im_gt_y = load_img(testimg_path + image_name + opt.ext)
                     elif opt.dataset == 'NTIRE':
                         im_gt_y = loadCube(testimg_path + image_name + opt.ext)[0].astype(np.float32)
+                    print("Forma dell'immagine:", im_gt_y.shape)
                     im_gt_y = im_gt_y[0:(im_gt_y.shape[0]//opt.msfa_size)*opt.msfa_size, 0:(im_gt_y.shape[1]//opt.msfa_size)*opt.msfa_size, :]
+                    print("Forma dell'immagine:", im_gt_y.shape)
                     max_new = np.max(im_gt_y)
                     im_gt_y = im_gt_y / max_new * 255
                     im_gt_y = im_gt_y.transpose(1, 0, 2)
@@ -167,9 +173,9 @@ for type_name in type_name_list:
                     h_pattern_n = 1
                     int_size = h_pattern_n * opt.msfa_size
                     paddingBottom = int(np.ceil(h / int_size) * int_size - h)
-                    im_input = nn.ZeroPad2d((0, 0, 0, paddingBottom))(im_input)
-                    raw = nn.ZeroPad2d((0, 0, 0, paddingBottom))(raw)
-
+                    paddingRight = int(np.ceil(w / int_size) * int_size - w)
+                    im_input = nn.ZeroPad2d((0, paddingRight, 0, paddingBottom))(im_input)
+                    raw = nn.ZeroPad2d((0, paddingRight, 0, paddingBottom))(raw)
                     scale_coord_map = input_matrix_wpn_msfasize(raw.shape[2], raw.shape[3], opt.msfa_size)
 
                     if cuda:
@@ -231,7 +237,7 @@ for type_name in type_name_list:
                     # Save the demosaiced image
                     output_dir = "output_demosaiced"
                     os.makedirs(output_dir, exist_ok=True)
-                    output_file = os.path.join(output_dir, "output.tif")
+                    output_file = os.path.join(output_dir, f"{image_name}_epoch_{epoch_num}.tif")
                     tifffile.imwrite(output_file, im_h_y.transpose(0,1,2).astype(np.uint8))
                     print(f"Saved demosaiced image to: {output_file}")
                     avg_psnr_predicted += psnr_predicted
@@ -248,28 +254,36 @@ for type_name in type_name_list:
                         ax = plt.subplot(221)
                         # ax.imshow(im_gt_y[nband, :, :], cmap='gray')
                         if opt.msfa_size == 3:
-                            buff = np.concatenate((im_gt_y[7:8, :, :], im_gt_y[1:2, :, :], im_gt_y[4:5, :, :])).transpose(1, 2, 0)
+                            buff = np.concatenate((im_gt_y[2:3, :, :], im_gt_y[1:2, :, :], im_gt_y[0:1, :, :])).transpose(1, 2, 0)
                         elif opt.msfa_size == 4:
                             buff = np.concatenate((im_gt_y[0:1, :, :], im_gt_y[7:8, :, :], im_gt_y[14:15, :, :])).transpose(1, 2, 0)
-                        ax.imshow(buff.astype(np.uint8), cmap='gray')
+                        ax.imshow(buff.astype(np.uint8))
                         ax.set_title("GT", fontsize=title_size)
- 
+                        ax.set_xticks([])  # Rimuove i numeri sull'asse X
+                        ax.set_yticks([])  # Rimuove i numeri sull'asse Y
+
                         ax = plt.subplot(222)
                         ax.imshow(im_input[nband, :, :], cmap='gray')
                         ax.set_title("Input(one band)", fontsize=title_size)
- 
+                        ax.set_xticks([])  # Rimuove i numeri sull'asse X
+                        ax.set_yticks([])  # Rimuove i numeri sull'asse Y
+
                         ax = plt.subplot(223)
-                        ax.imshow(raw[0, :, :], cmap='gray')
+                        ax.imshow(raw[nband, :, :], cmap='gray')
                         ax.set_title("Input(raw)", fontsize=title_size)
+                        ax.set_xticks([])  # Rimuove i numeri sull'asse X
+                        ax.set_yticks([])  # Rimuove i numeri sull'asse Y
  
                         ax = plt.subplot(224)
                         if opt.msfa_size == 3:
-                            buff = np.concatenate((im_h_y[7:8, :, :], im_h_y[1:2, :, :], im_h_y[4:5, :, :])).transpose(1, 2, 0)
+                            buff = np.concatenate((im_h_y[2:3, :, :], im_h_y[1:2, :, :], im_h_y[0:1, :, :])).transpose(1, 2, 0)
                         elif opt.msfa_size == 4:
                             buff = np.concatenate((im_h_y[0:1, :, :], im_h_y[7:8, :, :], im_h_y[14:15, :, :])).transpose(1, 2, 0)
                         ax.imshow(buff.astype(np.uint8),  cmap='gray')
                         model_name = os.path.basename(opt.model)
                         ax.set_title(model_name, fontsize=title_size)
+                        ax.set_xticks([])  # Rimuove i numeri sull'asse X
+                        ax.set_yticks([])  # Rimuove i numeri sull'asse Y
                         #print("Forme per visualizzazione:", buff.shape)
  
                         fig_dir = "output_plots"
