@@ -102,7 +102,7 @@ lista_psnr=[]
 
 type_name_list = ['ICVL_LSA_3_EItrain_Transrandom_alpha1_st1_250219_154603']
 for type_name in type_name_list:
-    for epoch_num in range(10, 30, 10):
+    for epoch_num in range(10, 210, 10):
         parser = argparse.ArgumentParser(description="USD syn dataset")
         parser.add_argument("--cuda", action="store_true", help="use cuda?")
         parser.add_argument("--model", default="checkpoint/"+type_name+"/De_happy_model_epoch_"+str(epoch_num)+".pth", type=str, help="model path")
